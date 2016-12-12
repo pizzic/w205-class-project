@@ -12,9 +12,26 @@ State varchar(4),
 ZIPCode varchar(7),
 CountyName varchar(22),
 PhoneNumber varchar(12),
-HospitalType varchar(38),
+HospitalType varchar(27),
 HospitalOwnership varchar(45),
-EmergencyServices varchar(5)
+EmergencyServices varchar(5),
+MeetsCriteriaForMeaningfulUseOfEHRs varchar(2),
+HospitalOverallRating int,
+HospitalOverallRatingFootnote varchar(141),
+MortalityNationalComparison varchar(30),
+MortalityNationalComparisonFootnote varchar(141),
+SafetyOfCareNationalComparison varchar(30),
+SafetyOfCareNationalComparisonFootnote varchar(141),
+ReadmissionNationalComparison varchar(30),
+ReadmissionNationalComparisonFootnote varchar(141),
+PatientExperienceNationalComparison varchar(30),
+PatientExperienceNationalComparisonFootnote varchar(141),
+EffectivenessOfCareNationalComparison varchar(30),
+EffectivenessOfCareNationalComparisonFootnote varchar(141),
+TimelinessOfCareNationalComparison varchar(30),
+TimelinessOfCareNationalComparisonFootnote varchar(141),
+EfficientUseOfMedicalImagingNationalComparison varchar(30),
+EfficientUseOfMedicalImagingNationalComparisonFootnote varchar(141)
 )
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' 
 WITH SERDEPROPERTIES (
@@ -24,6 +41,31 @@ WITH SERDEPROPERTIES (
 )
 STORED AS TEXTFILE
 LOCATION '/user/w205/data/hospitals';
+
+DROP TABLE Payment;
+
+CREATE EXTERNAL TABLE Payment (
+DRGDefinition varchar(255),
+ProviderID varchar(8),
+HospitalName varchar(52),
+Address varchar(52),
+City varchar(22),
+State varchar(4),
+ZIPCode varchar(7),
+HospitalReferralRegionDescription varchar(255), 
+TotalDischarges varchar(255), 
+AverageCoveredCharges varchar(255), 
+AverageTotalPayments varchar(255),
+AverageMedicarePayments varchar(255)
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' 
+WITH SERDEPROPERTIES (
+"separatorChar" = ",", 
+"quoteChar" = '"',
+"escapeChar" = '\\' 
+)
+STORED AS TEXTFILE
+LOCATION '/user/w205/data/payment';
 
 DROP TABLE Measures;
 

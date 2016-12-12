@@ -33,6 +33,7 @@ cd data
 #hdfs dfs -mkdir /user/w205/data/readmissions
 #hdfs dfs -mkdir /user/w205/data/survey_responses
 #hdfs dfs -mkdir /user/w205/data/effective_care
+#hdfs dfs -mkdir /user/w205/data/payment
 #hdfs dfs -mkdir /user/w205/data/medicare
 
 hdfs dfs -put hospitals.csv /user/w205/data/hospitals
@@ -40,6 +41,7 @@ hdfs dfs -put measures.csv /user/w205/data/measures
 hdfs dfs -put readmissions.csv /user/w205/data/readmissions
 hdfs dfs -put survey_responses.csv /user/w205/data/survey_responses
 hdfs dfs -put effective_care.csv /user/w205/data/effective_care
+hdfs dfs -put payment.csv /user/w205/data/payment
 
 cd ..
 hive -f sql/hive_base_ddl.sql
@@ -47,3 +49,7 @@ hive -f sql/effective_care_ddl.sql
 hive -f sql/readmissions_ddl.sql
 hive -f sql/survey_responses_ddl.sql
 hive -f sql/medicare_merge.sql
+
+hdfs dfs -get /user/w205/data/medicare/000000_0 medicare.csv 
+
+

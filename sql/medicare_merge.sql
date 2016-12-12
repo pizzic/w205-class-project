@@ -1,23 +1,24 @@
 USE Medicare;
 
-DROP TABLE AverageEffectiveCare;
+--DROP TABLE AverageEffectiveCare;
 
-CREATE TABLE AverageEffectiveCare 
-AS SELECT ProviderID, avg(Score) AS AverageEffectiveCareScore
-FROM EffectiveCare2 GROUP BY ProviderID;
+--CREATE TABLE AverageEffectiveCare 
+--AS SELECT ProviderID, avg(Score) AS AverageEffectiveCareScore
+--FROM EffectiveCare2 GROUP BY ProviderID;
 
-DROP TABLE AverageReadmissions;
+--DROP TABLE AverageReadmissions;
 
-CREATE TABLE AverageReadmissions 
-AS SELECT ProviderID, avg(Score) AS AverageReadmissionScore 
-FROM Readmissions2 GROUP BY ProviderID;
+--CREATE TABLE AverageReadmissions 
+--AS SELECT ProviderID, avg(Score) AS AverageReadmissionScore 
+--FROM Readmissions2 GROUP BY ProviderID;
 
-DROP TABLE Scores;
+--DROP TABLE Scores;
 
-CREATE TABLE Scores
-AS SELECT AverageEffectiveCare.ProviderID, AverageEffectiveCareScore, AverageReadmissionScore
-FROM AverageEffectiveCare INNER JOIN AverageReadmissions 
-ON AverageEffectiveCare.ProviderID = AverageReadmissions.ProviderID;
+--CREATE TABLE Scores
+--AS SELECT AverageEffectiveCare.ProviderID, AverageEffectiveCareScore, AverageReadmissionScore
+--FROM AverageEffectiveCare INNER JOIN AverageReadmissions 
+--ON AverageEffectiveCare.ProviderID = AverageReadmissions.ProviderID;
+
 
 DROP TABLE Medicare;
 
@@ -30,10 +31,26 @@ WITH SERDEPROPERTIES (
 )
 STORED AS TEXTFILE
 LOCATION '/user/w205/data/medicare'
-AS SELECT Scores.ProviderID, HospitalName, Address, City, State, ZIPCode, AverageEffectiveCareScore, AverageReadmissionScore
+AS SELECT 
+h.ProviderID, 
+HospitalName, 
+Address, 
+City, 
+State, 
+ZIPCode,
+HospitalOverallRating,
+MortalityNationalComparison,
+SafetyOfCareNationalComparison,
+ReadmissionNationalComparison,
+PatientExperienceNationalComparison,
+EffectivenessOfCareNationalComparison,
+TimelinessOfCareNationalComparison,
+EfficientUseOfMedicalImagingNationalComparison,
+AverageEffectiveCareScore, 
+AverageReadmissionScore
 FROM Scores INNER JOIN 
-(SELECT DISTINCT ProviderID, HospitalName, Address, City, State, ZIPCode from Hospitals) h
+(SELECT ho.* from Hospitals ho) h
 ON Scores.ProviderID = h.ProviderID;
 
-
+--(SELECT ho.*, p.AverageCoveredCharges, p.AverageTotalPayment, p.AverageMedicarePayments from Hospitals ho INNER JOIN Payment p ON ho.ProviderID = p.ProviderID) h
 
