@@ -35,7 +35,7 @@ cd data
 #hdfs dfs -mkdir /user/w205/data/effective_care
 #hdfs dfs -mkdir /user/w205/data/payment
 #hdfs dfs -mkdir /user/w205/data/medicare
-hdfs dfs -mkdir /user/w205/data/combined
+hdfs dfs -mkdir /user/w205/data/master
 
 hdfs dfs -put hospitals.csv /user/w205/data/hospitals
 #hdfs dfs -put measures.csv /user/w205/data/measures

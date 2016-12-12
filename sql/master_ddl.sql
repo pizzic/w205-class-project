@@ -1,9 +1,9 @@
 CREATE DATABASE IF NOT EXISTS Medicare;
 USE Medicare;
 
-DROP TABLE CombinedHospitalData;
+DROP TABLE MasterDataSet;
 
-CREATE EXTERNAL TABLE CombinedHospitalData (
+CREATE EXTERNAL TABLE MasterDataSet (
 ProviderID varchar(8), 
 HospitalName varchar(52),
 Address varchar(52),
@@ -30,4 +30,4 @@ WITH SERDEPROPERTIES (
 "escapeChar" = '\\' 
 )
 STORED AS TEXTFILE
-LOCATION '/user/w205/data/combined';
+LOCATION '/user/w205/data/master';
