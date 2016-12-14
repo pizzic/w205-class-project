@@ -25,7 +25,9 @@ state = []
 address = []
 zip_code = []
 
-for zips in range(94000,96000):
+#Using all CA Zip Codes for Search
+for zips in range(90001,96162):
+    print('Searching: ', zips)
     params = {'location': zips,
               'terms': 'hospital',
               'categories': 'medcenters',
