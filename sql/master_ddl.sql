@@ -1,9 +1,9 @@
 CREATE DATABASE IF NOT EXISTS Medicare;
 USE Medicare;
 
-DROP TABLE MasterDataSet;
+DROP TABLE Master;
 
-CREATE EXTERNAL TABLE MasterDataSet (
+CREATE EXTERNAL TABLE Master (
 ProviderID varchar(8), 
 HospitalName varchar(52),
 Address varchar(52),
