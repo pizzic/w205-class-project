@@ -20,6 +20,13 @@ TimelinessOfCareNationalComparison varchar(30),
 EfficientUseOfMedicalImagingNationalComparison varchar(30),
 AverageEffectiveCareScore float, 
 AverageReadmissionScore float,
+MortalityComp int,
+SafetyOfCareComp int,
+ReadmissionComp int,
+PatientExperienceComp int,
+EffectivenessOfCareComp int,
+TimelinessOfCareComp int,
+EfficientUseOfMedicalImagingComp int,
 SafetyGrade varchar(2),
 YelpRating float
 )
