@@ -47,7 +47,14 @@ EffectivenessOfCareNationalComparison,
 TimelinessOfCareNationalComparison,
 EfficientUseOfMedicalImagingNationalComparison,
 AverageEffectiveCareScore, 
-AverageReadmissionScore
+AverageReadmissionScore,
+(CASE MortalityNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as MortalityComp,
+(CASE SafetyOfCareNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as SafetyOfCareComp,
+(CASE ReadmissionNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as ReadmissionComp,
+(CASE PatientExperienceNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as PatientExperienceComp,
+(CASE EffectivenessOfCareNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as EffectivenessOfCareComp,
+(CASE TimelinessOfCareNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as TimelinessOfCareComp,
+(CASE EfficientUseOfMedicalImagingNationalComparison WHEN 'Same as the National average' THEN 0 WHEN 'Above the National average' THEN 1 WHEN 'Below the National average' THEN -1 ELSE NULL end) as EfficientUseOfMedicalImagingComp
 FROM Scores INNER JOIN 
 (SELECT ho.* from Hospitals ho) h
 ON Scores.ProviderID = h.ProviderID;
