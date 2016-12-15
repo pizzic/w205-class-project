@@ -20,26 +20,26 @@ for f in *\ *; do mv "$f" "${f// /_}"; done
 
 # Trim header line and rename
 tail -n +2 Hospital_General_Information.csv > ./hospitals.csv
-#tail -n +2 Measure_Dates.csv > ./measures.csv
+tail -n +2 Measure_Dates.csv > ./measures.csv
 tail -n +2 Readmissions_and_Deaths_-_Hospital.csv > ./readmissions.csv
 tail -n +2 Timely_and_Effective_Care_-_Hospital.csv > ./effective_care.csv
-#tail -n +2 hvbp_hcahps_08_26_2016.csv > ./survey_responses.csv
+tail -n +2 hvbp_hcahps_08_26_2016.csv > ./survey_responses.csv
 
 # Load the files into HDFS.
 hdfs dfs -put *.csv /user/w205/data
 
 hdfs dfs -mkdir /user/w205/data/hospitals
-#hdfs dfs -mkdir /user/w205/data/measures
+hdfs dfs -mkdir /user/w205/data/measures
 hdfs dfs -mkdir /user/w205/data/readmissions
-#hdfs dfs -mkdir /user/w205/data/survey_responses
+hdfs dfs -mkdir /user/w205/data/survey_responses
 hdfs dfs -mkdir /user/w205/data/effective_care
 hdfs dfs -mkdir /user/w205/data/payment
 hdfs dfs -mkdir /user/w205/data/medicare
 
 hdfs dfs -put hospitals.csv /user/w205/data/hospitals
-#hdfs dfs -put measures.csv /user/w205/data/measures
+hdfs dfs -put measures.csv /user/w205/data/measures
 hdfs dfs -put readmissions.csv /user/w205/data/readmissions
-#hdfs dfs -put survey_responses.csv /user/w205/data/survey_responses
+hdfs dfs -put survey_responses.csv /user/w205/data/survey_responses
 hdfs dfs -put effective_care.csv /user/w205/data/effective_care
 hdfs dfs -put payment.csv /user/w205/data/payment
 
