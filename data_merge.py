@@ -4,6 +4,7 @@ import glob
 import os
 import pandas as pd
 import numpy as np
+import re
 
 # Libraries for distance measures
 import Levenshtein
@@ -28,12 +29,22 @@ hsg["State"] = hsg["State"].map(str.strip)
 hsg["ZipCode"] = hsg["ZipCode"].astype(int)
 
 # Reading in Yelp data and removing duplicates
-yelp = pd.read_csv("yelp_hospitals.csv", encoding = "latin1")
+# yelp = pd.read_csv("yelp_hospitals.csv", encoding = "latin1")
+yelp = pd.read_csv("yelp2.csv", encoding = "latin1")
 yelp = yelp.drop_duplicates(subset = ["Address", "City", "Name", "Rating", "State", "ZipCode"])
 
 # Strip unnecessary whitespace and convert zip code to integer
 yelp["Name"] = yelp["Name"].map(str.strip)
 yelp["State"] = yelp["State"].map(str.strip)
+
+# yelp["ZipCode"] = yelp["ZipCode"].astype(str)
+# yelp["ZipCode"] = yelp["ZipCode"].map(str.strip)
+# yelp_zip = yelp.apply(lambda x: x["ZipCode"][:5], axis=1)
+# yelp["ZipCode"] = yelp_zip
+# yelp["ZipCode"] = yelp["ZipCode"].map(lambda x: re.sub(r'\s+', '',x))
+# yelp['ZipCode'].replace('', np.nan, inplace=True)
+yelp.dropna(subset=['ZipCode'], inplace=True)
+# yelp.dropna()
 yelp["ZipCode"] = yelp["ZipCode"].astype(int)
 
 # Matching all three datasets
@@ -61,7 +72,8 @@ for_eric = for_eric.drop('Unnamed: 0', 1).reset_index()
 # Read in Medicare data
 medicare_headers = ["ProviderID", "HospitalName", "Address", "City", "State", "ZipCode", "HospitalOverallRating", "MortalityNationalComparison",
 "SafetyOfCareNationalComparison", "ReadmissionNationalComparison", "PatientExperienceNationalComparison", "EffectivenessOfCareNationalComparison",
-"TimelinessOfCareNationalComparison", "EfficientUseOfMedicalImagingNationalComparison", "AverageEffectiveCareScore", "AverageReadmissionScore"]
+"TimelinessOfCareNationalComparison", "EfficientUseOfMedicalImagingNationalComparison", "AverageEffectiveCareScore", "AverageReadmissionScore",
+"MortalityComp", "SafetyOfCareComp", "ReadmissionComp", "PatientExperienceComp", "EffectivenessOfCareComp", "TimelinessOfCareComp", "EfficientUseOfMedicalImagingComp"]
 
 medicare = pd.read_csv("medicare.csv", encoding = "latin1", header = None, names = medicare_headers)
 
@@ -148,7 +160,10 @@ med_yelp_final_grouped = med_yelp_final.groupby(["ProviderID", "HospitalName", "
                                   "SafetyOfCareNationalComparison", "ReadmissionNationalComparison",
                                   "PatientExperienceNationalComparison", "EffectivenessOfCareNationalComparison",
                                   "TimelinessOfCareNationalComparison", "EfficientUseOfMedicalImagingNationalComparison",
-                                  "AverageEffectiveCareScore", "AverageReadmissionScore"]).aggregate(np.mean).reset_index()
+                                  "AverageEffectiveCareScore", "AverageReadmissionScore",
+                                  "MortalityComp", "SafetyOfCareComp", "ReadmissionComp",
+                                  "PatientExperienceComp", "EffectivenessOfCareComp",
+                                  "TimelinessOfCareComp", "EfficientUseOfMedicalImagingComp"]).aggregate(np.mean).reset_index()
 
 # Format to Hive schema
 med_yelp_final_grouped = med_yelp_final_grouped.drop(['Unnamed: 0'], 1)
@@ -160,7 +175,8 @@ med_yelp_final_grouped = med_yelp_final_grouped[["ProviderID", "HospitalName", "
 "SafetyOfCareNationalComparison", "ReadmissionNationalComparison",
 "PatientExperienceNationalComparison", "EffectivenessOfCareNationalComparison",
 "TimelinessOfCareNationalComparison", "EfficientUseOfMedicalImagingNationalComparison",
-"AverageEffectiveCareScore", "AverageReadmissionScore", "SafetyGrade", "YelpRating"]]
+"AverageEffectiveCareScore", "AverageReadmissionScore", "MortalityComp", "SafetyOfCareComp",
+"ReadmissionComp", "PatientExperienceComp", "EffectivenessOfCareComp", "TimelinessOfCareComp", "EfficientUseOfMedicalImagingComp", "SafetyGrade", "YelpRating"]]
 
 # Write to CSV
 # med_yelp_final_grouped.to_csv("Medicare_Yelp.csv", index = False)
@@ -181,7 +197,12 @@ med_only_final['YelpRating'] = np.nan
 # Append Medicare only data
 all_records = merged_records.append([med_only_final])
 
+all_records['SafetyGradeNumeric'] = np.nan
+
+gradeMap = {"A": 5, "B": 4, "C": 3, "D": 2, "F": 1, "": ""}
+all_records["SafetyGradeNumeric"] = all_records["SafetyGrade"].map(gradeMap)
+
 # Write to CSV
-all_records.to_csv("all_records.csv", index = False)
+all_records.to_csv("Master_Data_Set.csv", index = False)
 
 print("Done")

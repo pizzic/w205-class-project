@@ -14,14 +14,14 @@ from lxml import html
 # Creating CSV file
 outputFile = open('Hospital Safety Grade - Part 1.csv', 'w', newline='')
 outputWriter = csv.writer(outputFile)
-outputWriter.writerow(['State', 'Name', 'Address', 'Grade'])
+outputWriter.writerow(['Name', 'Address', 'City', 'State', 'ZipCode', 'Grade'])
 
 # Storing all URLs in a list
 urls = []
 
-group_1 = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS"]
-# group_2 = ["KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM"]
-# group_3 = ["NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
+states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS"]
+# states = ["KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM"]
+# states = ["NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
 # all_states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
 
 for state in states:
@@ -73,9 +73,12 @@ def scrape(url, html):
     for search_result in search_results:
         state = str(url[-12:-10])
         name = cleanhtml(str(search_result.contents[1].find_all(True, {"class":["name"]})).replace("\n", ""))
-        address = cleanhtml(str(search_result.contents[1].find_all(True, {"class":["address"]})).replace("\n", ""))
+        raw_address = str(search_result.contents[1].find_all(True, {"class":["address"]})).replace("\n", "")
+        address = cleanhtml(raw_address.split("<br/>")[0])
+        city = cleanhtml(raw_address.split("<br/>")[1].split(",")[0])
+        zip_code = cleanhtml(raw_address.split("<br/>")[1].split(",")[1].strip()[2:].strip())
         grade = str(search_result.contents[3])[31:32].replace("\n", "").upper()
-        outputWriter.writerow([state, name, address, grade])
+        outputWriter.writerow([name, address, city, state, zip_code, grade])
 
 # Running the code
 Render(urls, cb=scrape)
