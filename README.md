@@ -19,6 +19,8 @@ Run setup.sh
 ##Requirements:
 Hadoop
 
+Python 3.5 or later.
+
 Hive
 
 Postgres
