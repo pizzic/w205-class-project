@@ -30,8 +30,10 @@ hsg["ZipCode"] = hsg["ZipCode"].astype(int)
 
 # Reading in Yelp data and removing duplicates
 # yelp = pd.read_csv("yelp_hospitals.csv", encoding = "latin1")
-yelp = pd.read_csv("yelp2.csv", encoding = "latin1")
+yelp = pd.read_csv("yelp_final.csv", encoding = "latin1")
 yelp = yelp.drop_duplicates(subset = ["Address", "City", "Name", "Rating", "State", "ZipCode"])
+
+
 
 # Strip unnecessary whitespace and convert zip code to integer
 yelp["Name"] = yelp["Name"].map(str.strip)
@@ -41,10 +43,13 @@ yelp["State"] = yelp["State"].map(str.strip)
 # yelp["ZipCode"] = yelp["ZipCode"].map(str.strip)
 # yelp_zip = yelp.apply(lambda x: x["ZipCode"][:5], axis=1)
 # yelp["ZipCode"] = yelp_zip
-# yelp["ZipCode"] = yelp["ZipCode"].map(lambda x: re.sub(r'\s+', '',x))
-# yelp['ZipCode'].replace('', np.nan, inplace=True)
+# # yelp["ZipCode"] = yelp["ZipCode"].map(lambda x: re.sub(r'\s+', '',x))
+# # yelp['ZipCode'].replace('', np.nan, inplace=True)
 yelp.dropna(subset=['ZipCode'], inplace=True)
 # yelp.dropna()
+
+west_coast = ['CA', 'WA', 'OR', 'HI']
+yelp = yelp[yelp['State'].isin(west_coast)]
 yelp["ZipCode"] = yelp["ZipCode"].astype(int)
 
 # Matching all three datasets
