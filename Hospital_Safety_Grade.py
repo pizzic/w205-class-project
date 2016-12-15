@@ -11,18 +11,26 @@ import bs4 as bs
 import urllib.request
 from lxml import html
 
-# Creating CSV file
-outputFile = open('Hospital Safety Grade - Part 1.csv', 'w', newline='')
-outputWriter = csv.writer(outputFile)
-outputWriter.writerow(['Name', 'Address', 'City', 'State', 'ZipCode', 'Grade'])
+if len(sys.argv) < 2:
+    quit()
+else:
+    num = sys.argv[1]
 
 # Storing all URLs in a list
 urls = []
 
-states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS"]
-# states = ["KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM"]
-# states = ["NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
+states_1 = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS"]
+states_2 = ["KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM"]
+states_3 = ["NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
 # all_states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
+
+groups = {"1":states_1, "2":states_2, "3":states_3}
+states = groups[num]
+
+# Creating CSV file
+outputFile = open('Hospital Safety Grade - Part ' + num + '.csv', 'w', newline='')
+outputWriter = csv.writer(outputFile)
+outputWriter.writerow(['Name', 'Address', 'City', 'State', 'ZipCode', 'Grade'])
 
 for state in states:
     url = 'http://www.hospitalsafetygrade.org/search?findBy=state&zip_code=&city=&state_prov=' + state + '&hospital='
