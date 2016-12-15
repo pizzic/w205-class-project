@@ -1,23 +1,23 @@
 USE Medicare;
 
---DROP TABLE AverageEffectiveCare;
+DROP TABLE AverageEffectiveCare;
 
---CREATE TABLE AverageEffectiveCare 
---AS SELECT ProviderID, avg(Score) AS AverageEffectiveCareScore
---FROM EffectiveCare2 GROUP BY ProviderID;
+CREATE TABLE AverageEffectiveCare 
+AS SELECT ProviderID, avg(Score) AS AverageEffectiveCareScore
+FROM EffectiveCare2 GROUP BY ProviderID;
 
---DROP TABLE AverageReadmissions;
+DROP TABLE AverageReadmissions;
 
---CREATE TABLE AverageReadmissions 
---AS SELECT ProviderID, avg(Score) AS AverageReadmissionScore 
---FROM Readmissions2 GROUP BY ProviderID;
+CREATE TABLE AverageReadmissions 
+AS SELECT ProviderID, avg(Score) AS AverageReadmissionScore 
+FROM Readmissions2 GROUP BY ProviderID;
 
---DROP TABLE Scores;
+DROP TABLE Scores;
 
---CREATE TABLE Scores
---AS SELECT AverageEffectiveCare.ProviderID, AverageEffectiveCareScore, AverageReadmissionScore
---FROM AverageEffectiveCare INNER JOIN AverageReadmissions 
---ON AverageEffectiveCare.ProviderID = AverageReadmissions.ProviderID;
+CREATE TABLE Scores
+AS SELECT AverageEffectiveCare.ProviderID, AverageEffectiveCareScore, AverageReadmissionScore
+FROM AverageEffectiveCare INNER JOIN AverageReadmissions 
+ON AverageEffectiveCare.ProviderID = AverageReadmissions.ProviderID;
 
 
 DROP TABLE Medicare;

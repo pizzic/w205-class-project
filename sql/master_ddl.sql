@@ -28,7 +28,8 @@ EffectivenessOfCareComp int,
 TimelinessOfCareComp int,
 EfficientUseOfMedicalImagingComp int,
 SafetyGrade varchar(2),
-YelpRating float
+YelpRating float,
+SafetyGradeNumeric int
 )
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' 
 WITH SERDEPROPERTIES (

@@ -25,8 +25,8 @@ state = []
 address = []
 zip_code = []
 
-#Using all CA Zip Codes for Search
-for zips in range(90001,96162):
+#Using all West Coast Zip Codes for Search, Remember Yelp limits your requests to 25k a day...
+for zips in range(90001,99999):
     print('Searching: ', zips)
     params = {'location': zips,
               'terms': 'hospital',
