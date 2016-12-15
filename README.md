@@ -15,3 +15,5 @@ Hadoop
 Hive
 Postgres
 Levenshtein python package
+Tableau 10.1
+Cloudera Hadeeop ODBC Driver
